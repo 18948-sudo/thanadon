@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การพัฒนาเว็บไซต์สื่อการเรียนรู้เกี่ยวกับพืชดอกในประเทศไทย</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Sarabun', 'Kanit', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            border-bottom: 2px solid #4CAF50;
+            background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+            border-radius: 10px;
+        }
+        
+        h1 {
+            font-size: 42px;
+            color: #2E7D32;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .reviv {
+            font-size: 22px;
+            font-weight: bold;
+            color: #63c466;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 12px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            background-color: white;
+        }
+        .reviv:hover {
+            color: #035b05;
+            cursor: pointer;
+            background-color: #e8f5e8;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .menu-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4CAF50;
+            display: none;
+        }
+        
+        .active-section {
+            display: block;
+        }
+        
+        .menu-title {
+            font-size: 28px;
+            color: #2E7D32;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-title:before {
+            content: "🌸";
+            margin-right: 10px;
+            font-size: 30px;
+        }
+        
+        /* สไตล์สำหรับการ์ดพืชดอก */
+        .flower-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .flower-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .flower-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .flower-image {
+            width: 100%;
+            height: 220px;
+            background-color: #f0f9f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4CAF50;
+            font-size: 18px;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flower-image:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, transparent 100%);
+        }
+        
+        .flower-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .flower-name {
+            font-size: 22px;
+            color: #2E7D32;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .flower-name:before {
+            content: "🌺";
+            margin-right: 8px;
+        }
+        
+        .flower-scientific {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        
+        .flower-description {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+        
+        .flower-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e0e0e0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .detail-item {
+            margin-bottom: 8px;
+            display: flex;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            min-width: 100px;
+            color: #4CAF50;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px 0;
+            color: #777;
+            font-size: 15px;
+            border-top: 1px solid #e0e0e0;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .region-nav {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .region-btn {
+            padding: 10px 20px;
+            background-color: #e8f5e8;
+            border: 1px solid #4CAF50;
+            border-radius: 30px;
+            color: #2E7D32;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .region-btn.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .region-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .flower-count {
+            font-size: 16px;
+            color: #666;
+            margin-left: 10px;
+            font-weight: normal;
+            background: #e8f5e8;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .flower-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .region-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .region-btn {
+                width: 80%;
+            }
+        }
+        
+        .source-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+        }
+        
+        .region-intro {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .search-box {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .search-input {
+            padding: 12px 20px;
+            width: 300px;
+            border: 2px solid #4CAF50;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        .load-more {
+            text-align: center;
+            margin: 30px 0 10px;
+        }
+        
+        .load-more-btn {
+            padding: 12px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .load-more-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>การพัฒนาเว็บไซต์สื่อการเรียนรู้เกี่ยวกับพืชดอกในประเทศไทย</h1>
+            <p class="subtitle">แหล่งรวบรวมข้อมูลพืชดอกประจำท้องถิ่นในทุกภาคของประเทศไทย</p>
+            <div class="reviv" onclick="navigateTo('review.html')">รีวิว</div>
+        </header>
+        
+        
+        
+        <div class="region-nav">
+            <div class="region-btn active" onclick="showRegion('central')">ภาคกลาง</div>
+            <div class="region-btn" onclick="showRegion('north')">ภาคเหนือ</div>
+            <div class="region-btn" onclick="showRegion('northeast')">ภาคตะวันออกเฉียงเหนือ</div>
+            <div class="region-btn" onclick="showRegion('east')">ภาคตะวันออก</div>
+            <div class="region-btn" onclick="showRegion('south')">ภาคใต้</div>
+            <div class="region-btn" onclick="showRegion('west')">ภาคตะวันตก</div>
+        </div>
+        
+        <!-- ภาคกลาง -->
+        <section id="central" class="menu-section active-section">
+            <h2 class="menu-title">พืชดอกในภาคกลางของประเทศไทย <span class="flower-count">28 ชนิด</span></h2>
+            <p class="region-intro">ภาคกลางเป็นพื้นที่ราบลุ่มแม่น้ำสำคัญ มีความอุดมสมบูรณ์เหมาะสำหรับการเกษตร พืชดอกในภาคกลางส่วนใหญ่เป็นพืชที่ปลูกเป็นไม้ประดับและพืชเศรษฐกิจ</p>
+            
+            <div class="flower-grid">
+                <!-- ข้อมูลพืชดอกภาคกลางจะถูกเพิ่มโดย JavaScript -->
+            </div>
+            
+            <p class="source-info">ข้อมูลอ้างอิงจาก: https://th.wikipedia.org/</p>
+        </section>
+        
+        <!-- ภาคเหนือ -->
+        <section id="north" class="menu-section">
+            <h2 class="menu-title">พืชดอกในภาคเหนือของประเทศไทย <span class="flower-count">22 ชนิด</span></h2>
+            <p class="region-intro">ภาคเหนือมีภูมิประเทศเป็นภูเขาและที่สูง อากาศเย็นตลอดปี พืชดอกในภาคเหนือส่วนใหญ่เป็นไม้ดอกเมืองหนาวและพืชป่าเขา</p>
+            
+            <div class="flower-grid">
+                <!-- ข้อมูลพืชดอกภาคเหนือจะถูกเพิ่มโดย JavaScript -->
+            </div>
+            
+            <p class="source-info">ข้อมูลอ้างอิงจาก: https://th.wikipedia.org/</p>
+        </section>
+        
+        <!-- ภาคตะวันออกเฉียงเหนือ -->
+        <section id="northeast" class="menu-section">
+            <h2 class="menu-title">พืชดอกในภาคตะวันออกเฉียงเหนือของประเทศไทย <span class="flower-count">18 ชนิด</span></h2>
+            <p class="region-intro">ภาคตะวันออกเฉียงเหนือมีภูมิประเทศเป็นที่ราบสูงและภูเขาหินทราย พืชดอกในภาคนี้ส่วนใหญ่เป็นพืชทนแล้งและพืชป่าเต็งรัง</p>
+            
+            <div class="flower-grid">
+                <!-- ข้อมูลพืชดอกภาคตะวันออกเฉียงเหนือจะถูกเพิ่มโดย JavaScript -->
+            </div>
+            
+            <p class="source-info">ข้อมูลอ้างอิงจาก: https://th.wikipedia.org/</p>
+        </section>
+        
+        <!-- ภาคตะวันออก -->
+        <section id="east" class="menu-section">
+            <h2 class="menu-title">พืชดอกในภาคตะวันออกของประเทศไทย <span class="flower-count">15 ชนิด</span></h2>
+            <p class="region-intro">ภาคตะวันออกมีพื้นที่ติดทะเลและมีภูเขาสูงชัน พืชดอกในภาคนี้ส่วนใหญ่เป็นพืชชายฝั่งและพืชในป่าดิบชื้น</p>
+            
+            <div class="flower-grid">
+                <!-- ข้อมูลพืชดอกภาคตะวันออกจะถูกเพิ่มโดย JavaScript -->
+            </div>
+            
+            <p class="source-info">ข้อมูลอ้างอิงจาก: https://th.wikipedia.org/</p>
+        </section>
+        
+        <!-- ภาคใต้ -->
+        <section id="south" class="menu-section">
+            <h2 class="menu-title">พืชดอกในภาคใต้ของประเทศไทย <span class="flower-count">20 ชนิด</span></h2>
+            <p class="region-intro">ภาคใต้มีภูมิประเทศเป็นคาบสมุทรและหมู่เกาะ มีฝนตกชุกตลอดปี พืชดอกในภาคนี้ส่วนใหญ่เป็นพืชป่าชายเลนและพืชในป่าดิบชื้น</p>
+            
+            <div class="flower-grid">
+                <!-- ข้อมูลพืชดอกภาคใต้จะถูกเพิ่มโดย JavaScript -->
+            </div>
+            
+            <p class="source-info">ข้อมูลอ้างอิงจาก: https://th.wikipedia.org/</p>
+        </section>
+        
+        <!-- ภาคตะวันตก -->
+        <section id="west" class="menu-section">
+            <h2 class="menu-title">พืชดอกในภาคตะวันตกของประเทศไทย <span class="flower-count">12 ชนิด</span></h2>
+            <p class="region-intro">ภาคตะวันตกมีภูมิประเทศเป็นเทือกเขาสลับซับซ้อนและป่าดิบชื้น พืชดอกในภาคนี้ส่วนใหญ่เป็นพืชป่าดิบชื้นและพืชเฉพาะถิ่น</p>
+            
+            <div class="flower-grid">
+                <!-- ข้อมูลพืชดอกภาคตะวันตกจะถูกเพิ่มโดย JavaScript -->
+            </div>
+            
+            <p class="source-info">ข้อมูลอ้างอิงจาก: https://th.wikipedia.org/</p>
+        </section>
+        
+        <footer>
+            <p>© ยสส - การพัฒนาเว็บไซต์สื่อการเรียนรู้เกี่ยวกับพืชดอกในประเทศไทย</p>
+        </footer>
+    </div>
+
+    <script>
+        // ข้อมูลพืชดอกทั้งหมด
+        const flowersData = {
+            central: [
+                {
+                    name: "บัวหลวง",
+                    scientific: "Nelumbo nucifera",
+                    description: "บัวหลวงเป็นพืชน้ำล้มลุกอายุหลายปี มีลำต้นใต้ดินแบบเหง้า ใบเป็นใบเดี่ยวรูปกลมกว้าง ก้านใบยาวและมีหนาม ใบชูเหนือน้ำ ดอกเป็นดอกเดี่ยวขนาดใหญ่ชูเหนือน้ำ มีทั้งสีขาวและสีชมพู กลีบดอกจำนวนมากเรียงซ้อนหลายชั้น",
+                    bloom: "ตลอดปี โดยเฉพาะฤดูฝน",
+                    distribution: "พบทั่วไปในแหล่งน้ำนิ่งทั่วภาคกลาง",
+                    benefits: "ใช้ในพิธีทางศาสนา ปรุงอาหาร และเป็นไม้ประดับ"
+                },
+                {
+                    name: "ชมพูพันธุ์ทิพย์",
+                    scientific: "Tabebuia rosea",
+                    description: "ชมพูพันธุ์ทิพย์เป็นไม้ยืนต้นผลัดใบขนาดกลางถึงใหญ่ สูง 10-20 เมตร ใบเป็นใบประกอบรูปนิ้วมือ ประกอบด้วยใบย่อย 5 ใบ ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีชมพูอมม่วงถึงสีชมพูอ่อน",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในกรุงเทพฯ และจังหวัดใกล้เคียง",
+                    benefits: "ไม้ประดับให้ร่มเงาและดอกสวยงาม"
+                },
+                {
+                    name: "ราชพฤกษ์",
+                    scientific: "Cassia fistula",
+                    description: "ราชพฤกษ์หรือคูนเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเป็นใบประกอบแบบขนนกปลายคู่ ใบย่อย 4-8 คู่ รูปไข่หรือรูปขอบขนาน ดอกออกเป็นช่อยาวห้อยลง สีเหลืองสด",
+                    bloom: "กุมภาพันธ์-พฤษภาคม",
+                    distribution: "พบทั่วไปในภาคกลาง ปลูกเป็นไม้ประดับและไม้ริมถนน",
+                    benefits: "ไม้ประดับ สมุนไพร และเป็นสัญลักษณ์ของวันพืชมงคล"
+                },
+                {
+                    name: "พุทธรักษา",
+                    scientific: "Canna indica",
+                    description: "พุทธรักษาเป็นไม้ล้มลุกอายุหลายปี มีเหง้าทอดเลื้อยใต้ดิน ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อที่ปลายยอด แต่ละช่อมี 10-20 ดอก กลีบดอกมีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับริมน้ำและพื้นที่ชื้นแฉะ",
+                    benefits: "ไม้ประดับ ใบใช้ห่ออาหาร และเหง้าบำรุงร่างกาย"
+                },
+                {
+                    name: "เฟื่องฟ้า",
+                    scientific: "Bougainvillea",
+                    description: "เฟื่องฟ้าเป็นไม้เลื้อยพุ่มกึ่งไม้ยืนต้น มีหนาม ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปหัวใจ ดอกจริงมีขนาดเล็กสีขาวหรือครีม อยู่ภายในกลีบประดับที่มีสีสันสดใส",
+                    bloom: "ตลอดปี โดยเฉพาะฤดูแล้ง",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปตามรั้วและซุ้ม",
+                    benefits: "ไม้ประดับสวยงามและทนทาน"
+                },
+                {
+                    name: "บานไม่รู้โรย",
+                    scientific: "Gomphrena globosa",
+                    description: "บานไม่รู้โรยเป็นไม้ล้มลุกอายุสั้นหรือหลายปี สูง 30-60 เซนติเมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อทรงกลมคล้ายดอกโบตั๋น",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและบ้านเรือน",
+                    benefits: "ไม้ประดับ ใช้ในพวงมาลัย และเป็นสมุนไพร"
+                },
+                {
+                    name: "แก้ว",
+                    scientific: "Murraya paniculata",
+                    description: "แก้วเป็นไม้พุ่มหรือไม้ยืนต้นขนาดเล็ก สูง 2-5 เมตร ใบเป็นใบประกอบแบบขนนกปลายคี่ ใบย่อย 3-9 ใบ รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีขาว กลิ่นหอม",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในบ้านและสวน",
+                    benefits: "ไม้ประดับ ใช้ในพิธีกรรม และเป็นสมุนไพร"
+                },
+                {
+                    name: "มะลิ",
+                    scientific: "Jasminum sambac",
+                    description: "มะลิเป็นไม้พุ่มรอเลื้อย สูง 1-3 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบและปลายกิ่ง สีขาว กลิ่นหอมแรง",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในบ้านและสวน",
+                    benefits: "ไม้ประดับ ใช้ในพวงมาลัย และทำน้ำหอม"
+                },
+                {
+                    name: "ลีลาวดี",
+                    scientific: "Plumeria",
+                    description: "ลีลาวดีเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 3-8 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปหอก ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง มีหลายสี กลิ่นหอม",
+                    bloom: "ตลอดปี โดยเฉพาะฤดูร้อน",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและสถานที่สำคัญ",
+                    benefits: "ไม้ประดับสวยงามและมีกลิ่นหอม"
+                },
+                {
+                    name: "หงอนไก่",
+                    scientific: "Celosia argentea",
+                    description: "หงอนไก่เป็นไม้ล้มลุกอายุสั้น สูง 30-60 เซนติเมตร ใบเดี่ยวเรียงสลับ รูปใบหอก ดอกออกเป็นช่อกระจุกที่ปลายยอด มีลักษณะคล้ายหงอนไก่",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและบ้านเรือน",
+                    benefits: "ไม้ประดับและใช้ในพิธีกรรม"
+                },
+                {
+                    name: "อัญชัน",
+                    scientific: "Clitoria ternatea",
+                    description: "อัญชันเป็นไม้เลื้อยล้มลุกอายุสั้น ใบเป็นใบประกอบแบบขนนก ใบย่อย 5-7 ใบ ดอกออกเดี่ยวๆ ที่ซอกใบ สีม่วงหรือขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปตามรั้วและซุ้ม",
+                    benefits: "ไม้ประดับ ใช้ทำน้ำดื่ม และเป็นสมุนไพร"
+                },
+                {
+                    name: "ดาวเรือง",
+                    scientific: "Tagetes erecta",
+                    description: "ดาวเรืองเป็นไม้ล้มลุกอายุสั้น สูง 30-60 เซนติเมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปหอก ดอกออกเป็นช่อเดี่ยวที่ปลายยอด สีเหลืองหรือส้ม",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและใช้ในพิธีกรรม",
+                    benefits: "ไม้ประดับและใช้ในพิธีทางศาสนา"
+                },
+                {
+                    name: "กุหลาบ",
+                    scientific: "Rosa",
+                    description: "กุหลาบเป็นไม้พุ่มมีหนาม ใบเป็นใบประกอบแบบขนนก ใบย่อย 5-7 ใบ ดอกออกเดี่ยวๆ หรือเป็นช่อ มีหลายสีและหลายรูปทรง",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและบ้านเรือน",
+                    benefits: "ไม้ประดับ ใช้ในงานพิธี และทำน้ำหอม"
+                },
+                {
+                    name: "แก่นตะวัน",
+                    scientific: "Helianthus tuberosus",
+                    description: "แก่นตะวันเป็นไม้ล้มลุกอายุหลายปี สูง 1.5-3 เมตร ใบเดี่ยวเรียงสลับ รูปหัวใจ ดอกออกเป็นช่อกระจุกที่ปลายยอด สีเหลือง",
+                    bloom: "กันยายน-พฤศจิกายน",
+                    distribution: "ปลูกเป็นพืชเศรษฐกิจและไม้ประดับ",
+                    benefits: "พืชอาหารและไม้ประดับ"
+                },
+                {
+                    name: "พุด",
+                    scientific: "Gardenia jasminoides",
+                    description: "พุดเป็นไม้พุ่มขนาดเล็ก สูง 1-2 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีขาว กลิ่นหอม",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในบ้านและสวน",
+                    benefits: "ไม้ประดับและใช้ในพวงมาลัย"
+                },
+                {
+                    name: "ชบา",
+                    scientific: "Hibiscus rosa-sinensis",
+                    description: "ชบาเป็นไม้พุ่มขนาดเล็กถึงกลาง สูง 1-3 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ มีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและบ้านเรือน",
+                    benefits: "ไม้ประดับและใช้ในพิธีกรรม"
+                },
+                {
+                    name: "โคมจีน",
+                    scientific: "Abutilon pictum",
+                    description: "โคมจีนเป็นไม้พุ่มขนาดเล็ก สูง 1-2 เมตร ใบเดี่ยวเรียงสลับ รูปหัวใจ ดอกออกเดี่ยวๆ ที่ซอกใบ สีส้มหรือแดง รูปทรงคล้ายโคม",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวน",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "ผกากรอง",
+                    scientific: "Lantana camara",
+                    description: "ผกากรองเป็นไม้พุ่มขนาดเล็ก สูง 0.5-2 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่ ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง มีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและพื้นที่สาธารณะ",
+                    benefits: "ไม้ประดับและเป็นพืชคลุมดิน"
+                },
+                {
+                    name: "เทียนหยด",
+                    scientific: "Impatiens walleriana",
+                    description: "เทียนหยดเป็นไม้ล้มลุกอายุสั้น สูง 20-40 เซนติเมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปรี ดอกออกเดี่ยวๆ ที่ซอกใบ มีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและกระถาง",
+                    benefits: "ไม้ประดับสำหรับจัดสวน"
+                },
+                {
+                    name: "แววมยุรา",
+                    scientific: "Mussaenda",
+                    description: "แววมยุราเป็นไม้พุ่มขนาดเล็กถึงกลาง สูง 1-3 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและสถานที่สำคัญ",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "สร้อยทอง",
+                    scientific: "Galphimia gracilis",
+                    description: "สร้อยทองเป็นไม้พุ่มขนาดเล็ก สูง 0.5-1.5 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีเหลือง",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "ทองอุไร",
+                    scientific: "Allamanda cathartica",
+                    description: "ทองอุไรเป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงตรงข้ามหรือรอบข้อ รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีเหลือง",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปตามรั้วและซุ้ม",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "พุทธชาติ",
+                    scientific: "Pseuderanthemum reticulatum",
+                    description: "พุทธชาติเป็นไม้พุ่มขนาดเล็ก สูง 0.5-1 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่ ใบมีลายสีขาว ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวน",
+                    benefits: "ไม้ประดับใบสวยงาม"
+                },
+                {
+                    name: "เข็ม",
+                    scientific: "Ixora",
+                    description: "เข็มเป็นไม้พุ่มขนาดเล็กถึงกลาง สูง 1-3 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง มีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและบ้านเรือน",
+                    benefits: "ไม้ประดับและใช้ในพิธีกรรม"
+                },
+                {
+                    name: "โกสน",
+                    scientific: "Codiaeum variegatum",
+                    description: "โกสนเป็นไม้พุ่มขนาดเล็ก สูง 0.5-2 เมตร ใบเดี่ยวเรียงสลับ รูปทรงและสีสันหลากหลาย ดอกออกเป็นช่อกระจะที่ซอกใบ",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในสวนและบ้านเรือน",
+                    benefits: "ไม้ประดับใบสวยงาม"
+                },
+                {
+                    name: "วาสนา",
+                    scientific: "Dracaena fragrans",
+                    description: "วาสนาเป็นไม้พุ่มขนาดเล็กถึงกลาง สูง 1-3 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเป็นช่อกระจะที่ปลายยอด สีขาว กลิ่นหอม",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในบ้านและสำนักงาน",
+                    benefits: "ไม้ประดับและเป็นไม้มงคล"
+                },
+                {
+                    name: "พลูด่าง",
+                    scientific: "Epipremnum aureum",
+                    description: "พลูด่างเป็นไม้เลื้อย ใบเดี่ยวเรียงสลับ รูปหัวใจ ใบมีลายสีเหลืองหรือขาว ดอกออกเป็นช่อดอกแต่พบน้อยในการปลูกเลี้ยง",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในบ้านและสำนักงาน",
+                    benefits: "ไม้ประดับและเป็นไม้มงคล"
+                },
+                {
+                    name: "เศรษฐีเรือนใน",
+                    scientific: "Chlorophytum comosum",
+                    description: "เศรษฐีเรือนในเป็นไม้ล้มลุกอายุหลายปี ใบเดี่ยวเรียงเป็นกอ รูปขอบขนาน ใบมีลายสีขาว ดอกออกเป็นช่อกระจะ สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับทั่วไปในบ้านและสำนักงาน",
+                    benefits: "ไม้ประดับและเป็นไม้มงคล"
+                }
+            ],
+            north: [
+                {
+                    name: "กุหลาบพันปี",
+                    scientific: "Rhododendron",
+                    description: "กุหลาบพันปีเป็นไม้พุ่มหรือไม้ยืนต้นขนาดเล็กถึงกลาง ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปขอบขนาน ดอกออกเป็นช่อที่ปลายกิ่ง มีหลายสี เช่น ชมพู แดง ม่วง ขาว และเหลือง",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "พื้นที่สูงกว่า 1,000 เมตรในภาคเหนือ",
+                    benefits: "ไม้ประดับและเป็นสัญลักษณ์ของดอกไม้เมืองหนาว"
+                },
+                {
+                    name: "นางพญาเสือโคร่ง",
+                    scientific: "Prunus cerasoides",
+                    description: "นางพญาเสือโคร่งหรือซากุระเมืองไทยเป็นไม้ยืนต้นผลัดใบขนาดกลาง สูง 10-15 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปใบหอก ดอกออกเป็นช่อกระจุกตามกิ่ง ก่อนหรือพร้อมกับการผลิใบใหม่",
+                    bloom: "ธันวาคม-กุมภาพันธ์",
+                    distribution: "พื้นที่สูงในดอยอินทนนท์ ดอยสุเทพ และดอยอ่างขาง",
+                    benefits: "ไม้ประดับและเป็นแหล่งท่องเที่ยวสำคัญ"
+                },
+                {
+                    name: "เทียนนกแก้ว",
+                    scientific: "Impatiens psittacina",
+                    description: "เทียนนกแก้วเป็นพืชล้มลุกอายุสั้น สูง 30-50 เซนติเมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีม่วงอมชมพู มีลักษณะคล้ายนกแก้ว",
+                    bloom: "กันยายน-พฤศจิกายน",
+                    distribution: "พบเฉพาะในป่าดิบเขาภาคเหนือ",
+                    benefits: "ไม้ประดับหายากและมีลักษณะพิเศษ"
+                },
+                {
+                    name: "ดุสิตา",
+                    scientific: "Rhododendron lyi",
+                    description: "ดุสิตาเป็นไม้พุ่มขนาดเล็ก สูง 1-2 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปรี ดอกออกเป็นช่อที่ปลายกิ่ง สีชมพูอ่อน กลีบดอกเชื่อมกันเป็นรูปกรวย",
+                    bloom: "ธันวาคม-กุมภาพันธ์",
+                    distribution: "พื้นที่สูงในดอยอินทนนท์และดอยสุเทพ",
+                    benefits: "ไม้ประดับหายากและสวยงาม"
+                },
+                {
+                    name: "กะเรกะร่อน",
+                    scientific: "Paphiopedilum appletonianum",
+                    description: "กะเรกะร่อนเป็นกล้วยไม้ดินขนาดเล็ก ใบเป็นใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเดี่ยวๆ ที่ปลายก้านช่อดอก สีเขียวอมม่วง กลีบปากมีลักษณะเป็นกระเปาะ",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบเขาสูงในภาคเหนือ",
+                    benefits: "กล้วยไม้หายากและสวยงาม"
+                },
+                {
+                    name: "เอื้องหมายนา",
+                    scientific: "Spathoglottis plicata",
+                    description: "เอื้องหมายนาเป็นกล้วยไม้ดิน ใบเป็นใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเป็นช่อกระจะที่ปลายยอด มีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าดิบชื้นและพื้นที่เปิดในภาคเหนือ",
+                    benefits: "กล้วยไม้ประดับสวยงาม"
+                },
+                {
+                    name: "เสี้ยวดอกขาว",
+                    scientific: "Bauhinia variegata",
+                    description: "เสี้ยวดอกขาวเป็นไม้ยืนต้นขนาดกลาง สูง 8-12 เมตร ใบเดี่ยวเรียงสลับ รูปไข่ ปลายใบแยกเป็น 2 แฉก ดอกออกเป็นช่อสั้นๆ ที่ซอกใบ สีขาว",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "ป่าเบญจพรรณและป่าดิบชื้นในภาคเหนือ",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "ทองกวาว",
+                    scientific: "Butea monosperma",
+                    description: "ทองกวาวเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อย 3 ใบ รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีแสดแดง",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคเหนือ",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "กาสะลอง",
+                    scientific: "Millingtonia hortensis",
+                    description: "กาสะลองเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 10-20 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีขาว กลิ่นหอม",
+                    bloom: "พฤศจิกายน-กุมภาพันธ์",
+                    distribution: "ปลูกเป็นไม้ประดับในภาคเหนือ",
+                    benefits: "ไม้ประดับให้ร่มเงาและดอกหอม"
+                },
+                {
+                    name: "สารภีดอย",
+                    scientific: "Mammea siamensis",
+                    description: "สารภีดอยเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว กลิ่นหอม",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคเหนือ",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "มะลิวัลย์ดอย",
+                    scientific: "Jasminum elongatum",
+                    description: "มะลิวัลย์ดอยเป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบและปลายกิ่ง สีขาว กลิ่นหอม",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าดิบชื้นและป่าเบญจพรรณในภาคเหนือ",
+                    benefits: "ไม้ประดับและใช้ในพวงมาลัย"
+                },
+                {
+                    name: "กำลังเสือโคร่ง",
+                    scientific: "Tetracera loureiri",
+                    description: "กำลังเสือโคร่งเป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคเหนือ",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "สาบเสือ",
+                    scientific: "Ageratum conyzoides",
+                    description: "สาบเสือเป็นไม้ล้มลุกอายุสั้น สูง 30-60 เซนติเมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปหัวใจ ดอกออกเป็นช่อกระจุกที่ปลายยอด สีม่วงอ่อน",
+                    bloom: "ตลอดปี",
+                    distribution: "พื้นที่รกร้างและริมทางในภาคเหนือ",
+                    benefits: "สมุนไพรและพืชคลุมดิน"
+                },
+                {
+                    name: "ทองพันชั่ง",
+                    scientific: "Rhinacanthus nasutus",
+                    description: "ทองพันชั่งเป็นไม้พุ่มขนาดเล็ก สูง 0.5-1 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "พื้นที่รกร้างและสวนในภาคเหนือ",
+                    benefits: "สมุนไพรและไม้ประดับ"
+                },
+                {
+                    name: "กระดุมเงิน",
+                    scientific: "Vernonia cinerea",
+                    description: "กระดุมเงินเป็นไม้ล้มลุกอายุสั้น สูง 20-50 เซนติเมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ปลายยอด สีม่วง",
+                    bloom: "ตลอดปี",
+                    distribution: "พื้นที่รกร้างและริมทางในภาคเหนือ",
+                    benefits: "สมุนไพรและพืชคลุมดิน"
+                },
+                {
+                    name: "ดาวกระจาย",
+                    scientific: "Cosmos bipinnatus",
+                    description: "ดาวกระจายเป็นไม้ล้มลุกอายุสั้น สูง 0.5-1.5 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปเส้นด้าย ดอกออกเป็นช่อเดี่ยวที่ปลายยอด มีหลายสี",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับในสวนภาคเหนือ",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "ผีเสื้อ",
+                    scientific: "Bauhinia purpurea",
+                    description: "ผีเสื้อเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-10 เมตร ใบเดี่ยวเรียงสลับ รูปไข่ ปลายใบแยกเป็น 2 แฉก ดอกออกเป็นช่อสั้นๆ ที่ซอกใบ สีชมพูหรือม่วง",
+                    bloom: "ตุลาคม-ธันวาคม",
+                    distribution: "ปลูกเป็นไม้ประดับในภาคเหนือ",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "ทองอุไรดอย",
+                    scientific: "Allamanda cathartica",
+                    description: "ทองอุไรดอยเป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงตรงข้ามหรือรอบข้อ รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีเหลือง",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับตามรั้วและซุ้มในภาคเหนือ",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "เฟินก้านดำ",
+                    scientific: "Asplenium nidus",
+                    description: "เฟินก้านดำเป็นเฟินอิงอาศัย ใบเป็นใบเดี่ยวเรียงเป็นกอ รูปขอบขนาน ใบสีเขียวเข้มเป็นมัน ดอกออกเป็นกลุ่มที่ใต้ใบ",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "ป่าดิบชื้นในภาคเหนือ",
+                    benefits: "ไม้ประดับใบสวยงาม"
+                },
+                {
+                    name: "กุหลาบขาว",
+                    scientific: "Rhododendron simsii",
+                    description: "กุหลาบขาวเป็นไม้พุ่มขนาดเล็ก สูง 1-2 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปขอบขนาน ดอกออกเป็นช่อที่ปลายกิ่ง สีขาว",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "พื้นที่สูงในภาคเหนือ",
+                    benefits: "ไม้ประดับเมืองหนาว"
+                },
+                {
+                    name: "เอื้องแซะ",
+                    scientific: "Dendrobium chrysotoxum",
+                    description: "เอื้องแซะเป็นกล้วยไม้อิงอาศัย ใบเป็นใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเป็นช่อกระจะที่ข้อ มีสีเหลือง",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคเหนือ",
+                    benefits: "กล้วยไม้ประดับสวยงาม"
+                },
+                {
+                    name: "เอื้องคำ",
+                    scientific: "Dendrobium thyrsiflorum",
+                    description: "เอื้องคำเป็นกล้วยไม้อิงอาศัย ใบเป็นใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเป็นช่อกระจะที่ข้อ มีสีเหลือง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคเหนือ",
+                    benefits: "กล้วยไม้ประดับสวยงาม"
+                }
+            ],
+            northeast: [
+                {
+                    name: "รัก",
+                    scientific: "Calotropis gigantea",
+                    description: "รักเป็นไม้พุ่มขนาดกลาง สูง 2-4 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่กลับหรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบและปลายกิ่ง สีม่วงอ่อนหรือขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "พบทั่วไปในพื้นที่แห้งแล้งของภาคอีสาน",
+                    benefits: "ใช้ในพิธีกรรมและเป็นสมุนไพร"
+                },
+                {
+                    name: "กันภัย",
+                    scientific: "Mitrephora winitii",
+                    description: "กันภัยเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-10 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ หรือเป็นช่อสั้นๆ ตามกิ่ง สีเหลือง",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นพืชหายาก"
+                },
+                {
+                    name: "สุพรรณิการ์",
+                    scientific: "Cochlospermum regium",
+                    description: "สุพรรณิการ์เป็นไม้ยืนต้นผลัดใบขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเป็นใบประกอบแบบนิ้วมือ ประกอบด้วยใบย่อย 5-7 ใบ ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีเหลืองสด",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "ป่าเต็งรังและป่าเบญจพรรณในภาคอีสาน",
+                    benefits: "ไม้ประดับและใช้เส้นใยจากปุยเมล็ด"
+                },
+                {
+                    name: "พุดดง",
+                    scientific: "Gardenia collinsiae",
+                    description: "พุดดงเป็นไม้พุ่มหรือไม้ยืนต้นขนาดเล็ก สูง 2-4 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีขาว กลิ่นหอม",
+                    bloom: "มีนาคม-มิถุนายน",
+                    distribution: "ป่าเต็งรังและป่าเบญจพรรณในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "ยางน่อง",
+                    scientific: "Strophanthus gratus",
+                    description: "ยางน่องเป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบ สีชมพูอมม่วง กลีบดอกเชื่อมกันเป็นรูปแตร",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "ทองระอา",
+                    scientific: "Xanthophyllum flavescens",
+                    description: "ทองระอาเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเหลือง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "มะค่าโมง",
+                    scientific: "Afzelia xylocarpa",
+                    description: "มะค่าโมงเป็นไม้ยืนต้นขนาดใหญ่ สูง 15-25 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีขาวหรือชมพู",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเต็งรังและป่าเบญจพรรณในภาคอีสาน",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "ประดู่",
+                    scientific: "Pterocarpus macrocarpus",
+                    description: "ประดู่เป็นไม้ยืนต้นขนาดใหญ่ สูง 15-25 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีเหลือง",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้เศรษฐกิจ ไม้ประดับ และเป็นไม้มงคล"
+                },
+                {
+                    name: "กาสามปีก",
+                    scientific: "Hiptage benghalensis",
+                    description: "กาสามปีกเป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาวหรือชมพู",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "กระดาด",
+                    scientific: "Alocasia macrorrhizos",
+                    description: "กระดาดเป็นไม้ล้มลุกอายุหลายปี สูง 1-3 เมตร ใบเดี่ยวเรียงสลับ รูปหัวใจขนาดใหญ่ ดอกออกเป็นช่อดอกแต่พบน้อยในการปลูกเลี้ยง",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "พื้นที่ชื้นแฉะในภาคอีสาน",
+                    benefits: "ไม้ประดับใบสวยงาม"
+                },
+                {
+                    name: "ข่อย",
+                    scientific: "Streblus asper",
+                    description: "ข่อยเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบ",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "จันทน์กะพ้อ",
+                    scientific: "Vatica cinerea",
+                    description: "จันทน์กะพ้อเป็นไม้ยืนต้นขนาดกลาง สูง 10-20 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นไม้หอม"
+                },
+                {
+                    name: "ช้างน้าว",
+                    scientific: "Oroxylum indicum",
+                    description: "ช้างน้าวเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีม่วง",
+                    bloom: "เมษายน-มิถุนายน",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "ตีนเป็ด",
+                    scientific: "Alstonia scholaris",
+                    description: "ตีนเป็ดเป็นไม้ยืนต้นขนาดใหญ่ สูง 15-30 เมตร ใบเป็นใบประกอบแบบวงรอบ ใบย่อยรูปขอบขนาน ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีขาว",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเบญจพรรณในภาคอีสาน",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "นนทรี",
+                    scientific: "Peltophorum pterocarpum",
+                    description: "นนทรีเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 10-20 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีเหลือง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ปลูกเป็นไม้ประดับในภาคอีสาน",
+                    benefits: "ไม้ประดับให้ร่มเงา"
+                },
+                {
+                    name: "พยุง",
+                    scientific: "Dalbergia cochinchinensis",
+                    description: "พยุงเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 15-25 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคอีสาน",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "มะขาม",
+                    scientific: "Tamarindus indica",
+                    description: "มะขามเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 10-20 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปขอบขนาน ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเหลือง",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ปลูกทั่วไปในภาคอีสาน",
+                    benefits: "ไม้ผล ไม้ประดับ และเป็นสมุนไพร"
+                },
+                {
+                    name: "สัก",
+                    scientific: "Tectona grandis",
+                    description: "สักเป็นไม้ยืนต้นขนาดใหญ่ สูง 20-30 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่ขนาดใหญ่ ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีขาว",
+                    bloom: "มิถุนายน-สิงหาคม",
+                    distribution: "ปลูกเป็นไม้เศรษฐกิจในภาคอีสาน",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                }
+            ],
+            east: [
+                {
+                    name: "เห็ด",
+                    scientific: "Rafflesia kerrii",
+                    description: "เห็ดเป็นพืชกาฝากไม่มีใบและลำต้นแท้จริง มีเพียงดอกที่งอกออกมาจากรากของพืชอาศัย ดอกเป็นดอกเดี่ยวขนาดใหญ่ที่สุดในประเทศไทย เส้นผ่านศูนย์กลาง 50-90 เซนติเมตร",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นในเขตอุทยานแห่งชาติเขาใหญ่และปางสีดา",
+                    benefits: "เป็นพืชหายากและเป็นแหล่งท่องเที่ยวทางธรรมชาติ"
+                },
+                {
+                    name: "กันเกรา",
+                    scientific: "Fagraea fragrans",
+                    description: "กันเกราหรือตำเสาหรือมันปลาเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 10-25 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปไข่ ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีขาวนวลหรือเหลืองอ่อน",
+                    bloom: "มีนาคม-มิถุนายน",
+                    distribution: "ป่าดิบชื้นและป่าชายหาดในภาคตะวันออก",
+                    benefits: "ไม้ประดับ ไม้ใช้สอย และเป็นไม้มงคล"
+                },
+                {
+                    name: "โมกราชินี",
+                    scientific: "Wrightia dubia",
+                    description: "โมกราชินีเป็นไม้ยืนต้นขนาดเล็ก สูง 5-10 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีขาว",
+                    bloom: "เมษายน-มิถุนายน",
+                    distribution: "ป่าดิบชื้นในจังหวัดจันทบุรีและตราด",
+                    benefits: "ไม้ประดับหายากและเป็นพืชเฉพาะถิ่น"
+                },
+                {
+                    name: "มหาพรหม",
+                    scientific: "Mitrephora maingayi",
+                    description: "มหาพรหมเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ หรือเป็นช่อสั้นๆ ตามกิ่ง สีเหลือง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นพืชหายาก"
+                },
+                {
+                    name: "สรัสจันทร",
+                    scientific: "Mammea siamensis",
+                    description: "สรัสจันทรเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว กลิ่นหอม",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "กำลังหนุมาน",
+                    scientific: "Schefflera leucantha",
+                    description: "กำลังหนุมานเป็นไม้เลื้อยเนื้อแข็ง ใบเป็นใบประกอบแบบนิ้วมือ ใบย่อย 5-7 ใบ รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเขียว",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "จวง",
+                    scientific: "Cinnamomum parthenoxylon",
+                    description: "จวงเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 15-25 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเหลือง",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นไม้หอม"
+                },
+                {
+                    name: "ชะมวง",
+                    scientific: "Garcinia cowa",
+                    description: "ชะมวงเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นพืชอาหาร"
+                },
+                {
+                    name: "ตะเคียน",
+                    scientific: "Hopea odorata",
+                    description: "ตะเคียนเป็นไม้ยืนต้นขนาดใหญ่ สูง 20-35 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "นางแย้ม",
+                    scientific: "Pseuderanthemum carruthersii",
+                    description: "นางแย้มเป็นไม้พุ่มขนาดเล็ก สูง 0.5-1.5 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่ ใบมีลายสีขาวหรือชมพู ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับในภาคตะวันออก",
+                    benefits: "ไม้ประดับใบสวยงาม"
+                },
+                {
+                    name: "ประยงค์",
+                    scientific: "Aglaia odorata",
+                    description: "ประยงค์เป็นไม้พุ่มหรือไม้ยืนต้นขนาดเล็ก สูง 2-5 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเหลือง กลิ่นหอม",
+                    bloom: "ตลอดปี",
+                    distribution: "ปลูกเป็นไม้ประดับในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นไม้หอม"
+                },
+                {
+                    name: "พลวง",
+                    scientific: "Dipterocarpus alatus",
+                    description: "พลวงเป็นไม้ยืนต้นขนาดใหญ่ สูง 20-40 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีชมพู",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "มะฮอกกานี",
+                    scientific: "Swietenia macrophylla",
+                    description: "มะฮอกกานีเป็นไม้ยืนต้นขนาดใหญ่ สูง 20-30 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเขียว",
+                    bloom: "เมษายน-มิถุนายน",
+                    distribution: "ปลูกเป็นไม้เศรษฐกิจในภาคตะวันออก",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "สาธร",
+                    scientific: "Millettia brandisiana",
+                    description: "สาธรเป็นไม้ยืนต้นขนาดกลาง สูง 10-20 เมตร ใบเป็นใบประกอบแบบขนนก ใบย่อยรูปไข่ ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีม่วง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคตะวันออก",
+                    benefits: "ไม้ประดับและเป็นไม้หอม"
+                },
+                {
+                    name: "อบเชย",
+                    scientific: "Cinnamomum verum",
+                    description: "อบเชยเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเหลือง",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ปลูกเป็นไม้เศรษฐกิจในภาคตะวันออก",
+                    benefits: "ไม้เศรษฐกิจและเป็นเครื่องเทศ"
+                }
+            ],
+            south: [
+                {
+                    name: "บัวผุด",
+                    scientific: "Rafflesia kerrii",
+                    description: "บัวผุดเป็นพืชกาฝากไม่มีใบและลำต้นแท้จริง มีเพียงดอกที่งอกออกมาจากรากของพืชอาศัย ดอกเป็นดอกเดี่ยวขนาดใหญ่ เส้นผ่านศูนย์กลาง 50-90 เซนติเมตร",
+                    bloom: "ตุลาคม-ธันวาคม",
+                    distribution: "ป่าดิบชื้นในจังหวัดกระบี่ พังงา และตรัง",
+                    benefits: "เป็นพืชหายากและเป็นแหล่งท่องเที่ยวทางธรรมชาติ"
+                },
+                {
+                    name: "ชมพูพิมพ์ใจ",
+                    scientific: "Gardenia sootepensis",
+                    description: "ชมพูพิมพ์ใจเป็นไม้ยืนต้นขนาดกลาง สูง 8-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเดี่ยวๆ ที่ซอกใบ สีเหลือง กลิ่นหอมแรง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบเขาสูงในจังหวัดนครศรีธรรมราชและสุราษฎร์ธานี",
+                    benefits: "ไม้ประดับและเป็นพืชหายาก"
+                },
+                {
+                    name: "เล็บเหยี่ยว",
+                    scientific: "Artabotrys spinosus",
+                    description: "เล็บเหยี่ยวเป็นไม้เลื้อยเนื้อแข็ง กิ่งมีหนามแหลม ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ หรือเป็นช่อสั้นๆ ตามกิ่ง สีเหลือง",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าชายเลนและป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและใช้เป็นสมุนไพร"
+                },
+                {
+                    name: "อโศกน้ำ",
+                    scientific: "Saraca indica",
+                    description: "อโศกน้ำเป็นไม้ยืนต้นขนาดกลาง สูง 8-15 เมตร ใบเป็นใบประกอบแบบขนนกปลายคู่ ใบย่อย 4-6 คู่ รูปขอบขนาน ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีส้มหรือแดง",
+                    bloom: "มกราคม-เมษายน",
+                    distribution: "ป่าชายเลนและป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "อ้น",
+                    scientific: "Dillenia indica",
+                    description: "อ้นเป็นไม้ยืนต้นขนาดใหญ่ สูง 15-25 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ขนาดใหญ่ ดอกออกเดี่ยวๆ ที่ซอกใบ สีขาว ใหญ่",
+                    bloom: "มีนาคม-มิถุนายน",
+                    distribution: "ป่าดิบชื้นและป่าชายหาดในภาคใต้",
+                    benefits: "ไม้ประดับ ผลรับประทานได้ และเป็นสมุนไพร"
+                },
+                {
+                    name: "กระทิง",
+                    scientific: "Calophyllum inophyllum",
+                    description: "กระทิงเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 10-20 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าชายหาดและป่าชายเลนในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "เกด",
+                    scientific: "Manilkara hexandra",
+                    description: "เกดเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าชายหาดและป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นพืชอาหาร"
+                },
+                {
+                    name: "จันทน์ผา",
+                    scientific: "Dracaena loureiri",
+                    description: "จันทน์ผาเป็นไม้พุ่มหรือไม้ยืนต้นขนาดเล็ก สูง 2-5 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเป็นช่อกระจะที่ปลายยอด สีขาว",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "ป่าดิบชื้นและภูเขาหินปูนในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นไม้หอม"
+                },
+                {
+                    name: "ชะเอม",
+                    scientific: "Combretum quadrangulare",
+                    description: "ชะเอมเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีเหลือง",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นและป่าชายหาดในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "ตะแบก",
+                    scientific: "Lagerstroemia speciosa",
+                    description: "ตะแบกเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 10-20 เมตร ใบเดี่ยวเรียงตรงข้ามหรือรอบข้อ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีม่วง",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นและริมน้ำในภาคใต้",
+                    benefits: "ไม้ประดับสวยงาม"
+                },
+                {
+                    name: "เตย",
+                    scientific: "Pandanus amaryllifolius",
+                    description: "เตยเป็นไม้พุ่มขนาดเล็ก สูง 1-2 เมตร ใบเดี่ยวเรียงเวียนสลับ รูปขอบขนาน ดอกออกเป็นช่อดอกแต่พบน้อยในการปลูกเลี้ยง",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "พื้นที่ชื้นแฉะในภาคใต้",
+                    benefits: "ไม้ประดับและใช้ปรุงอาหาร"
+                },
+                {
+                    name: "เทียนทะเล",
+                    scientific: "Scaevola taccada",
+                    description: "เทียนทะเลเป็นไม้พุ่มขนาดเล็ก สูง 1-3 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าชายหาดในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นพืชคลุมดิน"
+                },
+                {
+                    name: "นางพญาเสือปลา",
+                    scientific: "Rhododendron malayanum",
+                    description: "นางพญาเสือปลาเป็นไม้พุ่มขนาดเล็ก สูง 1-2 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือรูปขอบขนาน ดอกออกเป็นช่อที่ปลายกิ่ง สีชมพู",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบเขาสูงในภาคใต้",
+                    benefits: "ไม้ประดับเมืองหนาว"
+                },
+                {
+                    name: "บุนนาค",
+                    scientific: "Mesua ferrea",
+                    description: "บุนนาคเป็นไม้ยืนต้นขนาดกลางถึงใหญ่ สูง 15-25 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีขาว",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นไม้หอม"
+                },
+                {
+                    name: "พญาไม้",
+                    scientific: "Garcinia hanburyi",
+                    description: "พญาไม้เป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นพืชให้สี"
+                },
+                {
+                    name: "มะดูก",
+                    scientific: "Siphonodon celastrineus",
+                    description: "มะดูกเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นพืชอาหาร"
+                },
+                {
+                    name: "รัง",
+                    scientific: "Shorea obtusa",
+                    description: "รังเป็นไม้ยืนต้นขนาดใหญ่ สูง 20-30 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเต็งรังในภาคใต้",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "ลาน",
+                    scientific: "Corypha umbraculifera",
+                    description: "ลานเป็นปาล์มขนาดใหญ่ สูง 10-20 เมตร ใบเป็นใบประกอบแบบ веер ใบย่อยรูปขอบขนาน ดอกออกเป็นช่อใหญ่ที่ปลายยอด",
+                    bloom: "ไม่แน่นอน",
+                    distribution: "ป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและใช้ทำเครื่องใช้"
+                },
+                {
+                    name: "ส้าน",
+                    scientific: "Dillenia suffruticosa",
+                    description: "ส้านเป็นไม้พุ่มขนาดเล็ก สูง 1-3 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเดี่ยวๆ ที่ซอกใบ สีเหลือง",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าดิบชื้นและป่าชายหาดในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นพืชอาหาร"
+                },
+                {
+                    name: "เหมือด",
+                    scientific: "Parinari anamense",
+                    description: "เหมือดเป็นไม้ยืนต้นขนาดกลาง สูง 10-20 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นในภาคใต้",
+                    benefits: "ไม้ประดับและเป็นพืชอาหาร"
+                }
+            ],
+            west: [
+                {
+                    name: "กาหลง",
+                    scientific: "Bauhinia acuminata",
+                    description: "กาหลงเป็นไม้พุ่มหรือไม้ยืนต้นขนาดเล็ก สูง 2-5 เมตร ใบเดี่ยวเรียงสลับ รูปไข่หรือเกือบกลม ปลายใบแยกเป็น 2 แฉก ดอกออกเป็นช่อสั้นๆ ที่ซอกใบ สีขาว",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าเบญจพรรณและป่าดิบชื้นในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "สารภี",
+                    scientific: "Mammea siamensis",
+                    description: "สารภีเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีขาว กลิ่นหอม",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าดิบชื้นในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "มะลิวัลย์",
+                    scientific: "Jasminum elongatum",
+                    description: "มะลิวัลย์เป็นไม้เลื้อยเนื้อแข็ง ใบเดี่ยวเรียงตรงข้าม รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจุกที่ซอกใบและปลายกิ่ง สีขาว กลิ่นหอม",
+                    bloom: "ตลอดปี",
+                    distribution: "ป่าดิบชื้นและป่าเบญจพรรณในภาคตะวันตก",
+                    benefits: "ไม้ประดับและใช้ในพวงมาลัย"
+                },
+                {
+                    name: "ทองหลาง",
+                    scientific: "Erythrina variegata",
+                    description: "ทองหลางเป็นไม้ยืนต้นขนาดกลาง สูง 10-15 เมตร ใบเป็นใบประกอบแบบนิ้วมือ ประกอบด้วยใบย่อย 3 ใบ รูปสามเหลี่ยม ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีแดงสด",
+                    bloom: "ธันวาคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นและป่าเบญจพรรณในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นพืชบำรุงดิน"
+                },
+                {
+                    name: "ประดู่",
+                    scientific: "Pterocarpus macrocarpus",
+                    description: "ประดู่เป็นไม้ยืนต้นขนาดใหญ่ สูง 15-25 เมตร ใบเป็นใบประกอบแบบขนนกปลายคี่ ใบย่อย 5-9 ใบ รูปไข่หรือรูปรี ดอกออกเป็นช่อกระจะที่ปลายกิ่ง สีเหลือง",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคตะวันตก",
+                    benefits: "ไม้เศรษฐกิจ ไม้ประดับ และเป็นไม้มงคล"
+                },
+                {
+                    name: "มะขามป้อม",
+                    scientific: "Phyllanthus emblica",
+                    description: "มะขามป้อมเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "มะพูด",
+                    scientific: "Garcinia dulcis",
+                    description: "มะพูดเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าดิบชื้นในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นพืชอาหาร"
+                },
+                {
+                    name: "รกฟ้า",
+                    scientific: "Cratoxylum formosum",
+                    description: "รกฟ้าเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-12 เมตร ใบเดี่ยวเรียงตรงข้าม รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีชมพู",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเบญจพรรณและป่าเต็งรังในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "สลัดได",
+                    scientific: "Euphorbia antiquorum",
+                    description: "สลัดไดเป็นไม้พุ่มขนาดเล็ก สูง 1-3 เมตร กิ่งเป็นเหลี่ยม ใบเดี่ยวเรียงสลับ รูปไข่ ดอกออกเป็นช่อกระจุกที่ซอกใบ",
+                    bloom: "ตลอดปี",
+                    distribution: "พื้นที่แห้งแล้งในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "เสม็ด",
+                    scientific: "Melaleuca cajuputi",
+                    description: "เสม็ดเป็นไม้ยืนต้นขนาดเล็กถึงกลาง สูง 5-15 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ปลายกิ่ง สีขาว",
+                    bloom: "มกราคม-มีนาคม",
+                    distribution: "ป่าชายเลนและพื้นที่ชื้นแฉะในภาคตะวันตก",
+                    benefits: "ไม้ประดับและเป็นสมุนไพร"
+                },
+                {
+                    name: "เหียง",
+                    scientific: "Dipterocarpus obtusifolius",
+                    description: "เหียงเป็นไม้ยืนต้นขนาดใหญ่ สูง 20-30 เมตร ใบเดี่ยวเรียงสลับ รูปขอบขนานหรือรูปใบหอก ดอกออกเป็นช่อกระจุกที่ซอกใบ สีชมพู",
+                    bloom: "กุมภาพันธ์-เมษายน",
+                    distribution: "ป่าเต็งรังในภาคตะวันตก",
+                    benefits: "ไม้เศรษฐกิจและไม้ประดับ"
+                },
+                {
+                    name: "เอื้องเงิน",
+                    scientific: "Dendrobium draconis",
+                    description: "เอื้องเงินเป็นกล้วยไม้อิงอาศัย ใบเป็นใบเดี่ยวเรียงสลับ รูปขอบขนาน ดอกออกเป็นช่อกระจะที่ข้อ มีสีขาว",
+                    bloom: "มีนาคม-พฤษภาคม",
+                    distribution: "ป่าดิบชื้นในภาคตะวันตก",
+                    benefits: "กล้วยไม้ประดับสวยงาม"
+                }
+            ]
+        };
+
+        // ฟังก์ชันแสดงพืชดอกในแต่ละภาค
+        function displayFlowers(region) {
+            const flowerGrid = document.querySelector(`#${region} .flower-grid`);
+            flowerGrid.innerHTML = '';
+            
+            flowersData[region].forEach(flower => {
+                const flowerCard = document.createElement('div');
+                flowerCard.className = 'flower-card';
+                flowerCard.innerHTML = `
+                    <div class="flower-image">ภาพดอก${flower.name}</div>
+                    <div class="flower-content">
+                        <h3 class="flower-name">${flower.name}</h3>
+                        <p class="flower-scientific">${flower.scientific}</p>
+                        <p class="flower-description">${flower.description}</p>
+                        <div class="flower-details">
+                            <div class="detail-item">
+                                <span class="detail-label">ฤดูดอกบาน:</span>
+                                <span>${flower.bloom}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">การกระจายพันธุ์:</span>
+                                <span>${flower.distribution}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">ประโยชน์:</span>
+                                <span>${flower.benefits}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                flowerGrid.appendChild(flowerCard);
+            });
+        }
+
+        // ฟังก์ชันแสดงภาคที่เลือก
+        function showRegion(region) {
+            // ซ่อนทุก section
+            document.querySelectorAll('.menu-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            
+            // แสดง section ที่เลือก
+            document.getElementById(region).classList.add('active-section');
+            
+            // อัพเดทปุ่มที่ active
+            document.querySelectorAll('.region-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // แสดงพืชดอกในภาคที่เลือก
+            displayFlowers(region);
+        }
+
+        // ฟังก์ชันค้นหาพืชดอก
+        function searchFlowers(searchTerm) {
+            if (searchTerm.length < 2) return;
+            
+            const results = [];
+            Object.keys(flowersData).forEach(region => {
+                flowersData[region].forEach(flower => {
+                    if (flower.name.includes(searchTerm) || 
+                        flower.scientific.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        flower.description.includes(searchTerm)) {
+                        results.push({...flower, region});
+                    }
+                });
+            });
+            
+            // แสดงผลการค้นหา
+            if (results.length > 0) {
+                const searchResults = document.createElement('div');
+                searchResults.id = 'search-results';
+                searchResults.innerHTML = `
+                    <div class="menu-section active-section">
+                        <h2 class="menu-title">ผลการค้นหา: "${searchTerm}"</h2>
+                        <div class="flower-grid">
+                            ${results.map(flower => `
+                                <div class="flower-card">
+                                    <div class="flower-image">ภาพดอก${flower.name}</div>
+                                    <div class="flower-content">
+                                        <h3 class="flower-name">${flower.name}</h3>
+                                        <p class="flower-scientific">${flower.scientific}</p>
+                                        <p class="flower-description">${flower.description}</p>
+                                        <div class="flower-details">
+                                            <div class="detail-item">
+                                                <span class="detail-label">ภาค:</span>
+                                                <span>${getRegionName(flower.region)}</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <span class="detail-label">ฤดูดอกบาน:</span>
+                                                <span>${flower.bloom}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // ลบผลการค้นหาเก่า (ถ้ามี)
+                const oldResults = document.getElementById('search-results');
+                if (oldResults) oldResults.remove();
+                
+                // เพิ่มผลการค้นหาใหม่
+                document.querySelector('.container').insertBefore(searchResults, document.querySelector('footer'));
+            }
+        }
+
+        // ฟังก์ชันแปลงรหัสภาคเป็นชื่อภาค
+        function getRegionName(regionCode) {
+            const regions = {
+                'central': 'ภาคกลาง',
+                'north': 'ภาคเหนือ',
+                'northeast': 'ภาคตะวันออกเฉียงเหนือ',
+                'east': 'ภาคตะวันออก',
+                'south': 'ภาคใต้',
+                'west': 'ภาคตะวันตก'
+            };
+            return regions[regionCode] || regionCode;
+        }
+
+        // ฟังก์ชันนำทาง
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // โหลดข้อมูลพืชดอกภาคกลางเมื่อหน้าเว็บโหลดเสร็จ
+        document.addEventListener('DOMContentLoaded', function() {
+            displayFlowers('central');
+        });
+    </script>
+</body>
+</html>
